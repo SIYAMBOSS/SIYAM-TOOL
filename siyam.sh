@@ -6,11 +6,16 @@ WRONG_PASS_LOG=".wrong_pass.txt"
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
 
-# --- LOGIN SYSTEM ---
+# --- LOGIN SYSTEM WITH PERSONAL INFO ---
 function login() {
     clear
-    echo -e "\e[1;33m      [ ACCESS RESTRICTED ]"
-    echo -e "\e[1;31m--------------------------------------"
+    echo -e "\e[1;36m====================================================="
+    echo -e "\e[1;33m       NAME  : SIYAM BOSS PRO"
+    echo -e "\e[1;32m       GMAIL : sadaf245sz@gmail.com"
+    echo -e "\e[1;35m       PHONE : +8801315127341"
+    echo -e "\e[1;36m====================================================="
+    echo -e "\e[1;31m             [ ACCESS RESTRICTED ]"
+    echo ""
     read -sp "Enter Tool Password: " tool_pass
     echo ""
     if [ "$tool_pass" == "siyam_boss" ]; then
@@ -20,7 +25,7 @@ function login() {
     else
         IP=$(curl -s ifconfig.me)
         echo "$(date '+%Y-%m-%d %H:%M:%S') - Tool Login Fail: $IP" >> "$WRONG_PASS_LOG"
-        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="❌ unauthorized tool access attempt: $IP" > /dev/null
+        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="❌ Unauthorized access attempt: $IP" > /dev/null
         echo -e "\e[1;31mWrong Password! Try Again.\e[0m"
         sleep 2
         login
@@ -63,7 +68,7 @@ function log_user() {
     IP=$(curl -s ifconfig.me)
     if ! grep -q "$IP" "$LOG_FILE" 2>/dev/null; then
         echo "$(date '+%Y-%m-%d %H:%M:%S') - IP: $IP" >> "$LOG_FILE"
-        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="👤 New User: $IP" > /dev/null
+        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="👤 New User Logged: $IP" > /dev/null
     fi
 }
 
