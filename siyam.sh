@@ -3,8 +3,10 @@
 # --- মূল মেনু ফাংশন ---
 function main_menu() {
 clear
+# গিটহাব অ্যালার্ট এবং ওনার ডিটেইলস
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
+
 echo -e "\e[1;36m    _____ _____ __     __  _    __  __ "
 echo -e "\e[1;36m   / ____|_   _\ \   / / / \  |  \/  |"
 echo -e "\e[1;36m  | (___   | |  \ \_/ / / _ \ | \  / |"
@@ -25,15 +27,19 @@ case $cmd in
      read -p "Enter Target IP: " target_ip
      if [ -z "$target_ip" ]; then target_ip=$(curl -s ifconfig.me); fi
      echo -e "\e[1;32mFetching data for $target_ip...\e[0m"
-     # JSON ফরম্যাটিং এরর এড়াতে python ব্যবহার
+     # JSON ডাটা সুন্দরভাবে সাজিয়ে দেখানো
      curl -s http://ip-api.com/json/$target_ip | python3 -m json.tool
-     echo ""; read -p "Press S to go back: " back ; [[ $back == "s" || $back == "S" ]] && main_menu ;;
-  2) read -p "Enter text: " qr ; qrencode -t ansiutf8 "$qr" ; echo ""; read -p "Press S to go back: " back ; [[ $back == "s" || $back == "S" ]] && main_menu ;;
-  3) cmatrix -C green -b ;;
+     echo ""
+     while true; do
+        read -p "Press S to go back: " back
+        if [[ $back == "s" || $back == "S" ]]; then main_menu; break; fi
+     done ;;
+  2) read -p "Enter text: " qr ; qrencode -t ansiutf8 "$qr" ; sleep 5 ; main_menu ;;
+  3) cmatrix -C green -b ; main_menu ;;
   4) git pull origin main ; sleep 2 ; main_menu ;;
-  5) read -p "URL: " u ; host $u ; echo ""; read -p "Press S to go back: " back ; [[ $back == "s" || $back == "S" ]] && main_menu ;;
-  6) read -p "IP: " i ; nc -zv $i 80 443 ; echo ""; read -p "Press S to go back: " back ; [[ $back == "s" || $back == "S" ]] && main_menu ;;
-  7) read -p "Phone: " p ; echo "Tracking $p..." ; sleep 2 ; main_menu ;;
+  5) read -p "URL: " u ; host $u ; sleep 5 ; main_menu ;;
+  6) read -p "IP: " i ; nc -zv $i 80 443 ; sleep 5 ; main_menu ;;
+  7) read -p "Phone: " p ; echo "Tracking $p..." ; sleep 5 ; main_menu ;;
   "siyam") admin_panel ;;
   0) exit ;;
   *) echo -e "\e[1;31mInvalid Option!\e[0m" ; sleep 1 ; main_menu ;;
