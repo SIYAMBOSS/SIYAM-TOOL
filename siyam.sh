@@ -3,8 +3,39 @@
 # --- Random Color Function ---
 function random_color() {
     colors=("\e[1;31m" "\e[1;32m" "\e[1;33m" "\e[1;34m" "\e[1;35m" "\e[1;36m" "\e[1;37m")
-    selected_color=${colors[$RANDOM % ${#colors[@]}]}
-    echo -ne "$selected_color"
+    echo -ne "${colors[$RANDOM % ${#colors[@]}]}"
+}
+
+# --- Design 1 ---
+function design1() {
+    COL=$(random_color)
+    echo -e "$COL    _____ _____ __     __  _    __  __ "
+    echo -e "$COL   / ____|_   _\ \   / / / \  |  \/  |"
+    echo -e "$COL  | (___   | |  \ \_/ / / _ \ | \  / |"
+    echo -e "$COL   \___ \  | |   \   / / ___ \| |\/| |"
+    echo -e "$COL   ____) |_| |_   | | /_/   \_\_|  |_|"
+    echo -e "$COL  |_____/|_____|  |_|                 "
+}
+
+# --- Design 2 ---
+function design2() {
+    COL=$(random_color)
+    echo -e "$COL   .---.  .-. .-.  .--.  .-.   .-. "
+    echo -e "$COL  (  _  ) | | | | / /\ \ |  \ /  | "
+    echo -e "$COL   \ \    | | | |/ /__\ \| \   / | "
+    echo -e "$COL  _ \ \   | | | ||  __  || |\_/| | "
+    echo -e "$COL ( '___' )| |_| || |  | || |   | | "
+    echo -e "$COL  '-----' '-----''-'  '-''-'   '-' "
+}
+
+# --- Design 3 ---
+function design3() {
+    COL=$(random_color)
+    echo -e "$COL   _________ _____  _____  ___  ___ "
+    echo -e "$COL  / ___/  _// ___/ / __  |/  |/  / "
+    echo -e "$COL  \__ \ / / / __ \/ /_/ / /|_/  /  "
+    echo -e "$COL ___/ // / / /_/ / /_/ / /  /  /   "
+    echo -e "$COL/____/___/ \____/_/   /_/  /_/    "
 }
 
 # --- Main Menu Function ---
@@ -13,16 +44,13 @@ clear
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
 
-# প্রতিবার র‍্যান্ডম রঙ সেট করা
-COL=$(random_color)
+# ৩টি ডিজাইনের মধ্যে একটি র‍্যান্ডমলি সিলেক্ট করা
+case $((RANDOM % 3)) in
+    0) design1 ;;
+    1) design2 ;;
+    2) design3 ;;
+esac
 
-echo -e "$COL    _____ _____ __     __  _    __  __ "
-echo -e "$COL   / ____|_   _\ \   / / / \  |  \/  |"
-echo -e "$COL  | (___   | |  \ \_/ / / _ \ | \  / |"
-echo -e "$COL   \___ \  | |   \   / / ___ \| |\/| |"
-echo -e "$COL   ____) |_| |_   | | /_/   \_\_|  |_|"
-echo -e "$COL  |_____/|_____|  |_|                 "
-echo -e "$COL         SIYAM BOSS PRO SECURITY TOOL"
 echo -e "\e[1;33m  Owner: +8801315127341 | Email: sadaf245sz@gmail.com"
 echo -e "\e[0m-------------------------------------------------------"
 echo -e "\e[1;32m[1] IP Finder      [2] QR Gen"
@@ -38,9 +66,7 @@ case $cmd in
      if [ -z "$target_ip" ]; then target_ip=$(curl -s ifconfig.me); fi
      curl -s http://ip-api.com/json/$target_ip | python3 -m json.tool
      back_to_home ;;
-  2) 
-     echo -e "\e[1;31mQR Gen process is active.\e[0m"
-     back_to_home ;;
+  2) echo "QR Gen is active."; back_to_home ;;
   3) cmatrix -C green -b ; main_menu ;;
   4) git pull origin main ; sleep 2 ; main_menu ;;
   5) read -p "URL: " u ; host $u ; back_to_home ;;
