@@ -6,11 +6,15 @@ WRONG_PASS_LOG=".wrong_pass.txt"
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
 
-# --- LOGIN SYSTEM WITH PERSONAL INFO ---
+# --- LOGIN SYSTEM WITH STYLISH NAME ---
 function login() {
     clear
     echo -e "\e[1;36m====================================================="
-    echo -e "\e[1;33m       NAME  : SIYAM BOSS PRO"
+    echo -e "\e[1;33m  ____ ___ _   _  _    __  __ "
+    echo -e "\e[1;33m / ___|_ _| \ | |/ \  |  \/  |"
+    echo -e "\e[1;33m \___ \ | ||  \| / _ \ | |\/| |"
+    echo -e "\e[1;33m  ___) || || |\  / ___ \| |  | |"
+    echo -e "\e[1;33m |____/___|_| \_/_/   \_\_|  |_|"
     echo -e "\e[1;32m       GMAIL : sadaf245sz@gmail.com"
     echo -e "\e[1;35m       PHONE : +8801315127341"
     echo -e "\e[1;36m====================================================="
@@ -19,20 +23,20 @@ function login() {
     read -sp "Enter Tool Password: " tool_pass
     echo ""
     if [ "$tool_pass" == "siyam_boss" ]; then
-        echo -e "\e[1;32mAccess Granted! Welcome Siyam.\e[0m"
+        echo -e "\e[1;32mAccess Granted! Welcome SIYAM.\e[0m"
         sleep 1
         main_menu
     else
         IP=$(curl -s ifconfig.me)
         echo "$(date '+%Y-%m-%d %H:%M:%S') - Tool Login Fail: $IP" >> "$WRONG_PASS_LOG"
-        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="❌ Unauthorized access attempt: $IP" > /dev/null
+        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="❌ Unauthorized login attempt: $IP" > /dev/null
         echo -e "\e[1;31mWrong Password! Try Again.\e[0m"
         sleep 2
         login
     fi
 }
 
-# --- RANDOM COLOR & FIXED DESIGNS ---
+# --- RANDOM COLOR & DESIGNS ---
 function col() {
     colors=("\e[1;31m" "\e[1;32m" "\e[1;33m" "\e[1;34m" "\e[1;35m" "\e[1;36m")
     echo -ne "${colors[$RANDOM % ${#colors[@]}]}"
