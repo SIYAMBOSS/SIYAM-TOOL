@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# --- মূল মেনু ফাংশন ---
 function main_menu() {
 clear
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
@@ -21,9 +22,11 @@ read -p "Select Command: " cmd
 
 case $cmd in
   1) 
-     read -p "Enter Target IP (Leave blank for yours): " target_ip
+     read -p "Enter Target IP: " target_ip
      if [ -z "$target_ip" ]; then target_ip=$(curl -s ifconfig.me); fi
-     curl -s http://ip-api.com/json/$target_ip | json_pp
+     echo -e "\e[1;32mFetching data for $target_ip...\e[0m"
+     # JSON ফরম্যাটিং এরর এড়াতে python ব্যবহার
+     curl -s http://ip-api.com/json/$target_ip | python3 -m json.tool
      echo ""; read -p "Press S to go back: " back ; [[ $back == "s" || $back == "S" ]] && main_menu ;;
   2) read -p "Enter text: " qr ; qrencode -t ansiutf8 "$qr" ; echo ""; read -p "Press S to go back: " back ; [[ $back == "s" || $back == "S" ]] && main_menu ;;
   3) cmatrix -C green -b ;;
@@ -33,10 +36,11 @@ case $cmd in
   7) read -p "Phone: " p ; echo "Tracking $p..." ; sleep 2 ; main_menu ;;
   "siyam") admin_panel ;;
   0) exit ;;
-  *) echo -e "\e[1;31mInvalid!\e[0m" ; sleep 1 ; main_menu ;;
+  *) echo -e "\e[1;31mInvalid Option!\e[0m" ; sleep 1 ; main_menu ;;
 esac
 }
 
+# --- অ্যাডমিন প্যানেল ফাংশন ---
 function admin_panel() {
      clear
      echo -e "\e[1;31m--- WELCOME TO HIDDEN ADMIN PANEL ---"
