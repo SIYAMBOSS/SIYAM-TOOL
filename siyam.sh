@@ -1,105 +1,85 @@
 #!/bin/bash
 
-# --- Random Color Function ---
-function random_color() {
-    colors=("\e[1;31m" "\e[1;32m" "\e[1;33m" "\e[1;34m" "\e[1;35m" "\e[1;36m" "\e[1;37m")
-    echo -ne "${colors[$RANDOM % ${#colors[@]}]}"
-}
-
-# --- Design 1 ---
-function design1() {
-    COL=$(random_color)
-    echo -e "$COL    _____ _____ __     __  _    __  __ "
-    echo -e "$COL   / ____|_   _\ \   / / / \  |  \/  |"
-    echo -e "$COL  | (___   | |  \ \_/ / / _ \ | \  / |"
-    echo -e "$COL   \___ \  | |   \   / / ___ \| |\/| |"
-    echo -e "$COL   ____) |_| |_   | | /_/   \_\_|  |_|"
-    echo -e "$COL  |_____/|_____|  |_|                 "
-}
-
-# --- Design 2 ---
-function design2() {
-    COL=$(random_color)
-    echo -e "$COL   .---.  .-. .-.  .--.  .-.   .-. "
-    echo -e "$COL  (  _  ) | | | | / /\ \ |  \ /  | "
-    echo -e "$COL   \ \    | | | |/ /__\ \| \   / | "
-    echo -e "$COL  _ \ \   | | | ||  __  || |\_/| | "
-    echo -e "$COL ( '___' )| |_| || |  | || |   | | "
-    echo -e "$COL  '-----' '-----''-'  '-''-'   '-' "
-}
-
-# --- Design 3 ---
-function design3() {
-    COL=$(random_color)
-    echo -e "$COL   _________ _____  _____  ___  ___ "
-    echo -e "$COL  / ___/  _// ___/ / __  |/  |/  / "
-    echo -e "$COL  \__ \ / / / __ \/ /_/ / /|_/  /  "
-    echo -e "$COL ___/ // / / /_/ / /_/ / /  /  /   "
-    echo -e "$COL/____/___/ \____/_/   /_/  /_/    "
-}
-
-# --- Main Menu Function ---
-function main_menu() {
-clear
+# --- কনফিগারেশন এবং লগ ফাইল ---
+LOG_FILE=".user_logs.txt"
+WRONG_PASS_LOG=".wrong_pass.txt"
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
 
-# ৩টি ডিজাইনের মধ্যে একটি র‍্যান্ডমলি সিলেক্ট করা
-case $((RANDOM % 3)) in
-    0) design1 ;;
-    1) design2 ;;
-    2) design3 ;;
-esac
-
-echo -e "\e[1;33m  Owner: +8801315127341 | Email: sadaf245sz@gmail.com"
-echo -e "\e[0m-------------------------------------------------------"
-echo -e "\e[1;32m[1] IP Finder      [2] QR Gen"
-echo -e "\e[1;32m[3] Matrix Ghost   [4] Update Tool"
-echo -e "\e[1;32m[5] Website Info   [6] Port Scanner"
-echo -e "\e[1;32m[7] Live Tracker   [0] Exit"
-echo "-------------------------------------------------------"
-read -p "Select Command: " cmd
-
-case $cmd in
-  1) 
-     read -p "Enter Target IP: " target_ip
-     if [ -z "$target_ip" ]; then target_ip=$(curl -s ifconfig.me); fi
-     curl -s http://ip-api.com/json/$target_ip | python3 -m json.tool
-     back_to_home ;;
-  2) echo "QR Gen is active."; back_to_home ;;
-  3) cmatrix -C green -b ; main_menu ;;
-  4) git pull origin main ; sleep 2 ; main_menu ;;
-  5) read -p "URL: " u ; host $u ; back_to_home ;;
-  6) read -p "IP: " i ; nc -zv $i 80 443 ; back_to_home ;;
-  7) read -p "Phone: " p ; echo "Tracking $p..." ; back_to_home ;;
-  "siyam") admin_panel ;;
-  0) exit ;;
-  *) echo -e "\e[1;31mInvalid!\e[0m" ; sleep 1 ; main_menu ;;
-esac
+# --- র‍্যান্ডম ডিজাইন ফাংশন ---
+function draw_banner() {
+    colors=("\e[1;31m" "\e[1;32m" "\e[1;33m" "\e[1;34m" "\e[1;35m" "\e[1;36m")
+    COL=${colors[$RANDOM % ${#colors[@]}]}
+    designs=("    _____ _____ __     __  _    __  __ " "   .---.  .-. .-.  .--.  .-.   .-. " "   _________ _____  _____  ___  ___ ")
+    echo -e "$COL${designs[$RANDOM % 3]}"
+    echo -e "\e[1;33m  Owner: +8801315127341 | Email: sadaf245sz@gmail.com"
 }
 
-function back_to_home() {
+# --- ইউজার লগ করার ফাংশন ---
+function log_user() {
+    IP=$(curl -s ifconfig.me)
+    if ! grep -q "$IP" "$LOG_FILE" 2>/dev/null; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - IP: $IP" >> "$LOG_FILE"
+        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="👤 New User Logged: $IP" > /dev/null
+    fi
+}
+
+function main_menu() {
+    clear
+    log_user
+    draw_banner
+    echo -e "\e[0m-------------------------------------------------------"
+    echo -e "\e[1;32m[1] IP Finder      [2] QR Gen"
+    echo -e "\e[1;32m[3] Matrix Ghost   [4] Update Tool"
+    echo -e "\e[1;32m[5] Website Info   [6] Port Scanner"
+    echo -e "\e[1;32m[7] Live Tracker   [0] Exit"
+    echo "-------------------------------------------------------"
+    read -p "Select Command: " cmd
+
+    case $cmd in
+      1) read -p "Enter IP: " ip ; curl -s http://ip-api.com/json/$ip | python3 -m json.tool ; back_to_home ;;
+      "siyam") check_pass ;;
+      0) exit ;;
+      *) main_menu ;;
+    esac
+}
+
+function check_pass() {
+    read -sp "Enter Admin Password: " pass
     echo ""
-    while true; do
-        read -p "Press S to go back: " back
-        if [[ $back == "s" || $back == "S" ]]; then
-            main_menu
-            break
-        fi
-    done
+    if [ "$pass" == "siyam123" ]; then
+        admin_panel
+    else
+        IP=$(curl -s ifconfig.me)
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Wrong Attempt IP: $IP" >> "$WRONG_PASS_LOG"
+        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d chat_id="$ID" -d text="⚠️ Alert! Wrong Password Attempt from IP: $IP" > /dev/null
+        echo -e "\e[1;31mAccess Denied!\e[0m" ; sleep 2 ; main_menu
+    fi
 }
 
 function admin_panel() {
      clear
-     echo -e "\e[1;31m--- WELCOME TO HIDDEN ADMIN PANEL ---"
-     echo -e "\e[1;32m[A] Social Hack    [B] Bot Setup"
-     echo -e "\e[1;32m[C] Database Access [s] Back to Home"
+     echo -e "\e[1;31m--- SIYAM BOSS PRIVATE DATABASE ---"
+     echo -e "\e[1;32m[1] Tool Users IP List"
+     echo -e "\e[1;32m[2] Failed Login Attempts (Wrong Pass)"
+     echo -e "\e[1;32m[s] Back to Home"
      echo "--------------------------------------"
      read -p "Admin Action: " adm
      case $adm in
+       1) clear ; echo -e "\e[1;34m--- Users List ---\e[0m" ; cat "$LOG_FILE" ; back_to_admin ;;
+       2) clear ; echo -e "\e[1;31m--- Failed Attempts ---\e[0m" ; cat "$WRONG_PASS_LOG" ; back_to_admin ;;
        "s"|"S") main_menu ;;
        *) admin_panel ;;
      esac
+}
+
+function back_to_home() {
+    echo "" ; read -p "Press S to go back: " back
+    if [[ $back == "s" || $back == "S" ]]; then main_menu; fi
+}
+
+function back_to_admin() {
+    echo "" ; read -p "Press Enter to return Admin Panel" ; admin_panel
 }
 
 main_menu
