@@ -1,4 +1,5 @@
 #!/bin/bash
+function main_menu() {
 clear
 # --- ADMIN CONFIG ---
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
@@ -30,13 +31,27 @@ case $cmd in
   5) read -p "URL: " u ; host $u ;;
   6) read -p "IP: " i ; nc -zv $i 80 443 ;;
   7) read -p "Phone: " p ; echo "Tracking $p..." ;;
-  "siyam") 
+  "siyam") admin_panel ;;
+  0) exit ;;
+  *) echo "Invalid Option!" ; sleep 2 ; main_menu ;;
+esac
+}
+
+function admin_panel() {
      clear
      echo -e "\e[1;31m--- WELCOME TO HIDDEN ADMIN PANEL ---"
      echo -e "\e[1;32m[A] Social Hack    [B] Bot Setup"
-     echo -e "\e[1;32m[C] Database Access [D] Back"
+     echo -e "\e[1;32m[C] Database Access [s] Back to Home"
+     echo "--------------------------------------"
      read -p "Admin Action: " adm
-     ;;
-  0) exit ;;
-  *) echo "Invalid Option!" ;;
-esac
+     
+     case $adm in
+       [Aa]) echo "Starting Social Hack..." ;;
+       [Bb]) echo "Configuring Bot..." ;;
+       [Cc]) echo "Accessing Database..." ;;
+       [Ss]) main_menu ;;
+       *) echo "Invalid!" ; sleep 2 ; admin_panel ;;
+     esac
+}
+
+main_menu
