@@ -1,19 +1,30 @@
 #!/bin/bash
 
-# --- Home Menu Function ---
+# --- Random Color Function ---
+function random_color() {
+    colors=("\e[1;31m" "\e[1;32m" "\e[1;33m" "\e[1;34m" "\e[1;35m" "\e[1;36m" "\e[1;37m")
+    selected_color=${colors[$RANDOM % ${#colors[@]}]}
+    echo -ne "$selected_color"
+}
+
+# --- Main Menu Function ---
 function main_menu() {
 clear
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
 
-echo -e "\e[1;36m    _____ _____ __     __  _    __  __ "
-echo -e "\e[1;36m   / ____|_   _\ \   / / / \  |  \/  |"
-echo -e "\e[1;36m  | (___   | |  \ \_/ / / _ \ | \  / |"
-echo -e "\e[1;36m   \___ \  | |   \   / / ___ \| |\/| |"
-echo -e "\e[1;36m   ____) |_| |_   | | /_/   \_\_|  |_|"
-echo -e "\e[1;36m  |_____/|_____|  |_|                 "
+# প্রতিবার র‍্যান্ডম রঙ সেট করা
+COL=$(random_color)
+
+echo -e "$COL    _____ _____ __     __  _    __  __ "
+echo -e "$COL   / ____|_   _\ \   / / / \  |  \/  |"
+echo -e "$COL  | (___   | |  \ \_/ / / _ \ | \  / |"
+echo -e "$COL   \___ \  | |   \   / / ___ \| |\/| |"
+echo -e "$COL   ____) |_| |_   | | /_/   \_\_|  |_|"
+echo -e "$COL  |_____/|_____|  |_|                 "
+echo -e "$COL         SIYAM BOSS PRO SECURITY TOOL"
 echo -e "\e[1;33m  Owner: +8801315127341 | Email: sadaf245sz@gmail.com"
-echo "-------------------------------------------------------"
+echo -e "\e[0m-------------------------------------------------------"
 echo -e "\e[1;32m[1] IP Finder      [2] QR Gen"
 echo -e "\e[1;32m[3] Matrix Ghost   [4] Update Tool"
 echo -e "\e[1;32m[5] Website Info   [6] Port Scanner"
@@ -25,11 +36,10 @@ case $cmd in
   1) 
      read -p "Enter Target IP: " target_ip
      if [ -z "$target_ip" ]; then target_ip=$(curl -s ifconfig.me); fi
-     echo -e "\e[1;32mFetching data...\e[0m"
      curl -s http://ip-api.com/json/$target_ip | python3 -m json.tool
      back_to_home ;;
   2) 
-     echo -e "\e[1;31mQR Gen skipped as per your request.\e[0m"
+     echo -e "\e[1;31mQR Gen process is active.\e[0m"
      back_to_home ;;
   3) cmatrix -C green -b ; main_menu ;;
   4) git pull origin main ; sleep 2 ; main_menu ;;
@@ -42,7 +52,6 @@ case $cmd in
 esac
 }
 
-# --- Loop to stay inside the tool until 's' is pressed ---
 function back_to_home() {
     echo ""
     while true; do
@@ -50,13 +59,10 @@ function back_to_home() {
         if [[ $back == "s" || $back == "S" ]]; then
             main_menu
             break
-        else
-            echo -e "\e[1;31mPlease press 's' to return to Home Menu.\e[0m"
         fi
     done
 }
 
-# --- Hidden Admin Panel ---
 function admin_panel() {
      clear
      echo -e "\e[1;31m--- WELCOME TO HIDDEN ADMIN PANEL ---"
@@ -66,7 +72,7 @@ function admin_panel() {
      read -p "Admin Action: " adm
      case $adm in
        "s"|"S") main_menu ;;
-       *) echo "Redirecting to Admin..."; sleep 1; admin_panel ;;
+       *) admin_panel ;;
      esac
 }
 
