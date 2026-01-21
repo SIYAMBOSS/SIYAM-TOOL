@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# --- CONFIG ---
+# --- কনফিগারেশন ---
 TOKEN="8032917202:AAFCD2hCP709BspRJSbibMl3BefYTVxV-qE"
 ID="7416528268"
 
-# --- LOGIN SCREEN ---
+# --- লগইন স্ক্রিন ---
 function login() {
     clear
     echo -e "\e[1;36m====================================================="
@@ -20,14 +20,10 @@ function login() {
     echo ""
     read -sp "Enter Tool Password: " tool_pass
     echo ""
-    if [ "$tool_pass" == "siyam_boss" ]; then
-        main_menu
-    else
-        echo -e "\e[1;31mWrong Password!\e[0m" ; sleep 2 ; login
-    fi
+    [[ "$tool_pass" == "siyam_boss" ]] && main_menu || login
 }
 
-# --- HEADER ---
+# --- বড় হেডলাইন ---
 function show_header() {
     clear
     echo -e "\e[1;32m"
@@ -35,22 +31,44 @@ function show_header() {
     echo -e "-------------------------------------------------------\e[0m"
 }
 
-# --- MAIN MENU ---
+# --- ক্লোনিং লজিক ---
+function start_fb_clone() {
+    show_header "FB CLONE"
+    echo -e "\e[1;33m[!] সিস্টেম চেক করা হচ্ছে..."
+    sleep 1
+    echo -e "\e[1;32m[+] সার্ভার কানেক্টেড!"
+    echo -e "\e[1;37mবর্তমানে এই ফিচারের জন্য আপনার ফোনে 'python' ও 'requests' প্রয়োজন।"
+    read -p "টার্গেট আইডি বা ইউজারনেম দিন: " target
+    echo -e "\e[1;31m[!] ক্র্যাকিং শুরু হচ্ছে: $target ..."
+    # এখানে আসল ক্লোনিং স্ক্রিপ্ট কল করতে পারেন
+    sleep 3
+    back_to_home
+}
+
+function start_gmail_clone() {
+    show_header "GMAIL CLONE"
+    echo -e "\e[1;32mConnecting to Server...\e[0m"
+    read -p "টার্গেট জিমেইল দিন: " target_mail
+    echo -e "\e[1;33m[~] ডিক্রিপ্টিং পাসওয়ার্ড লিস্ট..."
+    sleep 3
+    back_to_home
+}
+
+# --- মূল মেনু ---
 function main_menu() {
     clear
     echo -e "\e[1;33m      SIYAM PRIVATE SECURITY TOOL"
     echo -e "\e[1;36m-------------------------------------------------------"
     echo -e "\e[1;32m[1] IP Finder      [2] QR Gen"
     echo -e "\e[1;32m[3] Matrix Ghost   [4] Update Tool"
-    echo -e "\e[1;32m[5] Website Info   [6] Port Scanner"
-    echo -e "\e[1;32m[7] Live Tracker   [8] FB ID Clone"
-    echo -e "\e[1;32m[9] Gmail Clone    [0] Exit"
+    echo -e "\e[1;32m[8] FB ID Clone    [9] Gmail Clone"
+    echo -e "\e[1;32m[0] Exit"
     echo "-------------------------------------------------------"
     read -p "Select Command: " cmd
     case $cmd in
       1) show_header "IP FINDER" ; read -p "IP: " i ; curl -s http://ip-api.com/json/$i | python3 -m json.tool ; back_to_home ;;
-      8) show_header "FB CLONE" ; echo "Starting FB Cloning..." ; sleep 2 ; echo "Fetching ID's..." ; back_to_home ;;
-      9) show_header "GMAIL CLONE" ; echo "Connecting to Server..." ; sleep 2 ; back_to_home ;;
+      8) start_fb_clone ;;
+      9) start_gmail_clone ;;
       0) exit ;;
       *) main_menu ;;
     esac
