@@ -23,34 +23,32 @@ function login() {
     [[ "$tool_pass" == "siyam_boss" ]] && main_menu || login
 }
 
-# --- বড় হেডলাইন ---
-function show_header() {
+# --- জিমেইল ক্লোনিং অ্যানিমেশন ---
+function start_gmail_clone() {
     clear
     echo -e "\e[1;32m"
-    figlet -f slant "$1"
-    echo -e "-------------------------------------------------------\e[0m"
-}
-
-# --- ক্লোনিং লজিক ---
-function start_fb_clone() {
-    show_header "FB CLONE"
-    echo -e "\e[1;33m[!] সিস্টেম চেক করা হচ্ছে..."
-    sleep 1
-    echo -e "\e[1;32m[+] সার্ভার কানেক্টেড!"
-    echo -e "\e[1;37mবর্তমানে এই ফিচারের জন্য আপনার ফোনে 'python' ও 'requests' প্রয়োজন।"
-    read -p "টার্গেট আইডি বা ইউজারনেম দিন: " target
-    echo -e "\e[1;31m[!] ক্র্যাকিং শুরু হচ্ছে: $target ..."
-    # এখানে আসল ক্লোনিং স্ক্রিপ্ট কল করতে পারেন
-    sleep 3
-    back_to_home
-}
-
-function start_gmail_clone() {
-    show_header "GMAIL CLONE"
-    echo -e "\e[1;32mConnecting to Server...\e[0m"
-    read -p "টার্গেট জিমেইল দিন: " target_mail
-    echo -e "\e[1;33m[~] ডিক্রিপ্টিং পাসওয়ার্ড লিস্ট..."
-    sleep 3
+    figlet -f slant "GMAIL CLONE"
+    echo -e "-------------------------------------------------------"
+    echo -e "\e[1;33m[!] Connecting to Global Server...\e[0m"
+    sleep 2
+    echo -e "\e[1;32m[+] Bruteforce Started...\e[0m"
+    echo ""
+    
+    # র‍্যান্ডম জিমেইল ও পাসওয়ার্ড জেনারেটর লুপ
+    for i in {1..50}
+    do
+        # র‍্যান্ডম নাম ও নম্বর তৈরি
+        USER=$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)
+        NUM=$((RANDOM % 9000 + 1000))
+        PASS=$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | fold -w 10 | head -n 1)
+        
+        # স্ক্রিনে প্রিন্ট করা
+        echo -e "\e[1;37m[\e[1;32mOK\e[1;37m] ${USER}${NUM}@gmail.com | \e[1;33mPASS: ${PASS}\e[0m"
+        sleep 0.1
+    done
+    
+    echo ""
+    echo -e "\e[1;32m[✔] Cloning Finished. Check results in 'gmail_results.txt'\e[0m"
     back_to_home
 }
 
@@ -66,8 +64,7 @@ function main_menu() {
     echo "-------------------------------------------------------"
     read -p "Select Command: " cmd
     case $cmd in
-      1) show_header "IP FINDER" ; read -p "IP: " i ; curl -s http://ip-api.com/json/$i | python3 -m json.tool ; back_to_home ;;
-      8) start_fb_clone ;;
+      1) clear ; figlet "IP FINDER" ; read -p "IP: " i ; curl -s http://ip-api.com/json/$i | python3 -m json.tool ; back_to_home ;;
       9) start_gmail_clone ;;
       0) exit ;;
       *) main_menu ;;
